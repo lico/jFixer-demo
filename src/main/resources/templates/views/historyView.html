@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<head lang="en" th:include="views/commonHeader :: header">
+</head>
+
+<body>
+
+<div th:insert="views/commonMenu :: header"></div>
+
+<hr />
+
+<div class="container-fluid">
+	<div class="row">
+		
+		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+		
+		<div class="col-2 alert alert-secondary">
+			<div th:insert="views/commonForm :: formLatest"></div>
+		</div>
+		
+		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+	
+		<div th:if="${#strings.equals(error,'')}" class="col-4 alert alert-info">
+			<h2>Rates</h2>
+			<table class="table">
+				<thead>
+					<th>Currency</th>
+					<th class="text-right">Rate</th>
+					<th class="text-right">Date</th>
+				</thead>
+				<tbody>
+				<tr th:each="rate : ${rates}">
+					<td th:text="${rate.targetCurrency}"><b></b></td>
+					<td class="text-right">
+						<span th:inline="text">[[${#numbers.formatDecimal(rate.rate, 0, 'COMMA', 6, 'POINT')}]]</span>&nbsp;<span th:text="${rate.baseCurrency}"></span>
+					</td>
+					<td class="text-right" th:text="${#temporals.format(rate.timestamp, 'dd-MM-yyyy HH:mm')}"></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<th:block th:insert="views/commonError :: error" th:unless="${#strings.isEmpty(error)}" id="toto"></th:block>
+		
+		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+		
+		<th:block th:insert="views/commonJson :: json"></th:block> 
+		
+	</div>
+</div>
+    
+
+<th:block th:insert="views/commonJavaScript :: jscript"></th:block> 
+<script th:inline="javascript">
+/*<![CDATA[*/
+$( function() {
+    $( "#date" ).datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm-dd'
+      });
+} );
+/*]]>*/
+</script>
+</body>
+</html>

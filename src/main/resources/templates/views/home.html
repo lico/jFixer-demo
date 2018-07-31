@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<head lang="en" th:include="views/commonHeader :: header">
+</head>
+
+<body>
+
+	<div th:insert="views/commonMenu :: header"></div>
+
+	<hr />
+
+	<div class="container-fluid">
+		<div class="row">
+
+			<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+
+			<div class="col-2 alert alert-secondary">
+				<div th:insert="views/commonForm :: formHome"></div>
+			</div>
+
+			<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+
+			<div class="col">
+				<h2>jFixer API Helper</h2>
+				<h5>Demo and helper of <a href="https://github.com/lico/jFixer">jFixer</a>, the Java API for the <a href="https://fixer.io">Fixer.io</a> Exchange Rates web service</h5>
+
+				<br />
+		
+				<h4>Instructions</h4>
+				<ul>
+					<li>Select one of the above endpoints</li>
+					<li>Fill-in the form on the left and click on the submit
+						button to view the results</li>
+				</ul>
+				
+				<br />
+				
+				<h4>Notes</h4>
+				<dl>
+				<dt>About jFixer Helper</dt>
+				<dd>- jFixer Helper uses jFixer API to send live requests to the Fixer.io web service</dd>
+				<dd>- The program requires a valid access key of your own. This key is neither verified nor stored or sent to a 3rd party, it is just sent to Fixer.io using the Java API. You must get your own access key.</dd>
+				
+				<dt>About the simulator mode</dt>
+				<dd>- When "Simulator Mode" is selected, requests are not sent to the actual   
+				Fixer.io web service but are instead processed locally by the jFixer Helper 
+				simulator.
+				</dd>
+				<dd>
+				- There's no need to enter a valid access key for the simulator. You can simulate an invalid access key by typing value INVALID_API_KEY.
+				</dd>
+				<dd>
+				- The simulator generates test data, they should not be taken for actual rates.
+				</dd>
+				</dl>
+				
+
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+
+				Feel free to send questions, suggestions and comments to <a
+					href="mailto:lionel@upandcoding.com">UpAndCoding.com</a>.
+
+			</div>
+		</div>
+	</div>
+
+
+	<script src="/jFixer/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<script src="/jFixer/misc/jsonformat/jsonFormat.js"></script>
+	<script src="/jFixer/jquery/3.3.1/jquery-3.3.1.min.js"></script>
+	<script src="/jFixer/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+</body>
+</html>

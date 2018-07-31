@@ -1,0 +1,4 @@
+ 		<div th:unless="${#strings.equals(error,'')}" class="col-4 alert alert-info" th:fragment="error">
+			<h1>Error</h1>
+			<span th:text="${error}"></span>
+		</div>

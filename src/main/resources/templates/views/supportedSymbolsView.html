@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<head lang="en" th:include="views/commonHeader :: header">
+</head>
+
+<body>
+
+<div th:insert="views/commonMenu :: header"></div>
+
+<hr />
+
+<div class="container-fluid">
+	<div class="row">
+		
+		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+		
+		<div class="col-2 alert alert-secondary">
+			<div th:insert="views/commonForm :: formSymbols"></div>
+		</div>
+		
+		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+	
+		<div class="col-4 alert alert-info">
+			<h2>Rates</h2>
+			<table class="table">
+				<thead>
+					<th>Currency</th>
+					<th>Display name</th>
+					<th><th:block th:text="'Local name for ' + ${country}" /></th>
+				</thead>
+				<tbody>
+				<tr th:each="currency : ${currencies}">
+					<td th:text="${currency.symbol}"></td>
+					<td th:text="${currency.displayName}"></td>
+					<td th:text="${currency.getDisplayName(locale)}"></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+		
+		<th:block th:insert="views/commonJson :: json"></th:block> 
+		
+	</div>
+</div>
+
+<th:block th:insert="views/commonJavaScript :: jscript"></th:block> 
+</body>
+</html>

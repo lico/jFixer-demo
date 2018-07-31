@@ -1,0 +1,16 @@
+ 
+<th:block th:fragment="jscript">
+	<script src="/jFixer/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<script src="/jFixer/misc/jsonformat/jsonFormat.js"></script>
+	<script src="/jFixer/jquery/3.3.1/jquery-3.3.1.min.js"></script>
+	<script src="/jFixer/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	$(document).ready(function() {
+	    var jsonContent = /*[[${WebResponse}]]*/ "";
+	    var disp = document.getElementById("jsonRaw");
+	    disp.innerHTML = "<pre>" + formatJson(jsonContent) + "</pre>";
+	});
+	/*]]>*/
+	</script>
+</th:block>

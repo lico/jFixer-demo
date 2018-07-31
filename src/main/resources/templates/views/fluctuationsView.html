@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<head lang="en" th:include="views/commonHeader :: header">
+</head>
+
+<body>
+
+<div th:insert="views/commonMenu :: header"></div>
+
+<hr />
+
+<div class="container-fluid">
+	<div class="row">
+		
+		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+		
+		<div class="col-2 alert alert-secondary">
+			<div th:insert="views/commonForm :: formTimeSeries"></div>
+		</div>
+		
+		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+	
+		<div th:if="${#strings.equals(error,'')}" class="col-4 alert alert-info">
+			<h2>Fluctuations</h2>
+			<table class="table">
+				<thead>
+					<th>Currency</th>
+					<th:block th:each="fluctuation, iStat : ${fluctuations}" th:if="${iStat.index <= 0}">
+						<th th:text="${fluctuation.startDate}" class="text-right"></th>
+						<th th:text="${fluctuation.endDate}" class="text-right"></th>
+					</th:block>
+					<th class="text-right">Change</th>
+					<th class="text-right">Change (%)</th>
+				</thead>
+				<tbody>
+				<tr th:each="fluctuation : ${fluctuations}">
+					<td th:text="${fluctuation.targetCurrency}"></td>
+					<td class="text-right">
+						<span th:inline="text">[[${#numbers.formatDecimal(fluctuation.startRate, 1, 'COMMA', 6, 'POINT')}]]</span>&nbsp;<span th:text="${fluctuation.baseCurrency}"></span>
+					</td>
+					<td class="text-right">
+						<span th:inline="text">[[${#numbers.formatDecimal(fluctuation.endRate, 1, 'COMMA', 6, 'POINT')}]]</span>&nbsp;<span th:text="${fluctuation.baseCurrency}"></span>
+					</td>
+					<td class="text-right">
+						<span th:inline="text">[[${#numbers.formatDecimal(fluctuation.change, 1, 'COMMA', 6, 'POINT')}]]</span>&nbsp;<span th:text="${fluctuation.baseCurrency}"></span>
+					</td>
+					<td class="text-right">
+						<span th:inline="text">[[${#numbers.formatDecimal(fluctuation.changePct*100, 0, 'COMMA', 2, 'POINT')}]]</span>&nbsp;%
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<th:block th:insert="views/commonError :: error" th:unless="${#strings.isEmpty(error)}" id="toto"></th:block>
+		
+		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+		
+		<th:block th:insert="views/commonJson :: json"></th:block> 
+		
+	</div>
+</div>
+    
+
+<th:block th:insert="views/commonJavaScript :: jscript"></th:block> 
+<script th:inline="javascript">
+/*<![CDATA[*/
+$( function() {
+    $( "#start_date" ).datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm-dd'
+      });
+    $( "#end_date" ).datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm-dd'
+      });
+} );
+/*]]>*/
+</script>
+</body>
+</html>

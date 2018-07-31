@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<head lang="en" th:include="views/commonHeader :: header">
+</head>
+
+<body>
+
+	<div th:insert="views/commonMenu :: header"></div>
+
+	<hr />
+
+	<div class="container-fluid">
+		<div class="row">
+
+			<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+
+			<div class="col-2 alert alert-secondary">
+				<div th:insert="views/commonForm :: formConvert"></div>
+			</div>
+
+			<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+
+			<div th:if="${#strings.equals(error,'')}" class="col-4 alert alert-info">
+				<h2>Convert</h2>
+				<table class="table">
+					<tr>
+						<td>From</td>
+						<td th:text="${from}"></td>
+					</tr>
+					<tr>
+						<td>To</td>
+						<td th:text="${to}"></td>
+					</tr>
+					<tr>
+						<td>Amount</td>
+						<td><span th:inline="text">[[${#numbers.formatDecimal(amount, 1, 'COMMA', 2, 'POINT')}]]</span>&nbsp;</span></td>
+					</tr>
+					<tr>
+						<td>Date</td>
+						<td th:text="${date}"></td>
+					</tr>
+				</table>
+				<h2>Result:</h2>
+				<table class="table">
+					<tr>
+						<td><span th:inline="text">[[${#numbers.formatDecimal(result, 1, 'COMMA', 6, 'POINT')}]]</span>&nbsp;<span th:text="${to}"></span></td>
+					</tr>
+				</table>
+			</div>
+
+			<th:block th:insert="views/commonError :: error" th:unless="${#strings.isEmpty(error)}" id="toto"></th:block>
+		
+			<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+		
+			<th:block th:insert="views/commonJson :: json"></th:block> 
+
+		</div>
+	</div>
+
+
+		<th:block th:insert="views/commonJavaScript :: jscript"></th:block> 
+		<script th:inline="javascript">
+		/*<![CDATA[*/
+		$(function() {
+			$("#date").datepicker({
+				changeMonth : true,
+				changeYear : true,
+				dateFormat : 'yy-mm-dd'
+			});
+		});
+		/*]]>*/
+	</script>
+</body>
+</html>

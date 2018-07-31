@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<head lang="en" th:include="views/commonHeader :: header">
+</head>
+
+<body>
+
+<div th:insert="views/commonMenu :: header"></div>
+
+<hr />
+
+<div class="container-fluid">
+	<div class="row">
+		
+		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+		
+		<div class="col-2 alert alert-secondary">
+			<div th:insert="views/commonForm :: formTimeSeries"></div>
+		</div>
+		
+		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+	
+		<div th:if="${#strings.equals(error,'')}" class="col-4 alert alert-info">
+			<h2>Rates</h2>
+			<table class="table">
+				<thead>
+					<th>Date</th>
+					<th>Currency</th>
+					<th class="text-right">Rate</th>
+				</thead>
+				<tbody>
+					<tr th:each="rate : ${rates}">
+						<td th:text="${rate.date}" ></td>
+						<td th:text="${rate.targetCurrency}"></td>
+						<td class="text-right">
+							<span th:inline="text">[[${#numbers.formatDecimal(rate.rate, 0, 'COMMA', 6, 'POINT')}]]</span>&nbsp;<span th:text="${rate.baseCurrency}"></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<th:block th:insert="views/commonError :: error" th:unless="${#strings.isEmpty(error)}" id="toto"></th:block>
+		
+		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
+		
+		<th:block th:insert="views/commonJson :: json"></th:block> 
+		
+	</div>
+</div>
+    
+
+<script src="/jFixer/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script src="/jFixer/misc/jsonformat/jsonFormat.js"></script>
+<script src="/jFixer/jquery/3.3.1/jquery-3.3.1.min.js"></script>
+<script src="/jFixer/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+$(document).ready(function() {
+    var jsonContent = /*[[${WebResponse}]]*/ "";
+    var disp = document.getElementById("jsonRaw");
+    disp.innerHTML = "<pre>" + formatJson(jsonContent) + "</pre>";
+});
+$( function() {
+    $( "#start_date" ).datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm-dd'
+      });
+    $( "#end_date" ).datepicker({
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm-dd'
+      });
+} );
+/*]]>*/
+</script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!--/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */-->
+<!--/* LATEST and HISTORY */-->
+<!--/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */-->
+<div th:fragment="formLatest" class="container-fluid">
+	<!--/* Form */-->
+	<form method="POST" th:action="@{/jFixer/} + ${endpoint}" accept-charset="ISO-8859-1" id="fixerForm" name="fixerForm">
+		<div class="form-group row">
+			<small><label for="access_key">Access Key</label></small>
+			<input type="text" id="access_key" name="access_key" th:value="${access_key}" class="form-control form-control-sm" />
+		</div>
+		<div class="form-group row">
+			<small><label for="base">Base Currency</label></small>
+			<select id="base" name="base" class="form-control form-control-sm">
+				<option value="_DEFAULT"> -- Default -- </option>
+				<option th:each="currency : ${currencies}" th:value="${currency.symbol}" th:utext="${currency.symbol} + '-' + ${currency.displayName}" th:selected="${currency.symbol eq base}"/>
+        	</select>
+        </div>
+        <div th:switch="${endpoint}"> 
+        	<div th:case="history" class="form-group row">
+				<small><label for="date">Date</label></small>
+				<input type="text" id="date" name="date" th:value="${date}" class="form-control form-control-sm" />
+        	</div>
+		</div>
+        <div class="form-group row">
+        	<small><label for="symbols">Target Currencies</label>&nbsp;<a href="#" onclick="javascript: document.getElementById('symbols').selectedIndex=-1;"/>reset</a></small>
+        	<!--/* <input type="text"  id="symbols" name="symbols" th:value="${symbols}" />*/-->
+        	<select multiple class="form-control form-control-sm" id="symbols" name="symbols" size="15">
+        		<option th:each="currency : ${currencies}" th:value="${currency.symbol}" th:utext="${currency.symbol} + '-' + ${currency.displayName}" th:selected="${#strings.contains(symbols,currency.symbol)}"/>
+    		</select>
+        </div>
+        <div class="form-group row">
+        	<div th:with="dbgChecked=(${debugMode} ? 'checked')">
+        	<input type="checkbox" id="debugMode" name="debugMode" th:checked="${dbgChecked}" />&nbsp; 
+        	<small><label for="debugMode" class="form-check-label">Simulator Mode</label></small>
+        	</div>
+        </div>
+        <div class="form-group row">
+        	<input class="btn btn-primary btn-sm" type="submit" />
+        </div>
+	</form>
+	<!--/* Form */-->
+</div>
+
+<!--/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */-->
+<!--/* TIME-SERIES AND FLUCTUATIONS */-->
+<!--/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */-->
+<div th:fragment="formTimeSeries" class="container-fluid">
+	<!--/* Form */-->
+	<form method="POST" th:action="@{/jFixer/} + ${endpoint}" accept-charset="ISO-8859-1" id="fixerForm" name="fixerForm">
+		<div class="form-group row">
+			<small><label for="access_key">Access Key</label></small>
+			<input type="text" id="access_key" name="access_key" th:value="${access_key}" class="form-control form-control-sm" />
+		</div>
+		<div class="form-group row">
+			<small><label for="base">Base Currency</label></small>
+			<select id="base" name="base" class="form-control form-control-sm">
+				<option value="_DEFAULT"> -- Default -- </option>
+				<option th:each="currency : ${currencies}" th:value="${currency.symbol}" th:utext="${currency.symbol} + '-' + ${currency.displayName}" th:selected="${currency.symbol eq base}"/>
+        	</select>
+        </div>
+        <div th:switch="${endpoint}"> 
+        	<div th:case="history" class="form-group row">
+				<small><label for="date">Date</label></small>
+				<input type="text" id="date" name="date" th:value="${date}" class="form-control form-control-sm" />
+        	</div>
+		</div>
+       	<div class="form-group row">
+			<small><label for="start_date">Start Date</label></small>
+			<input type="text" id="start_date" name="start_date" th:value="${start_date}" class="form-control form-control-sm" />
+		</div>
+       	<div class="form-group row">
+			<small><label for="end_date">End Date</label></small>
+			<input type="text" id="end_date" name="end_date" th:value="${end_date}" class="form-control form-control-sm" />
+       	</div>
+        <div class="form-group row">
+        	<small><label for="symbols">Target Currencies</label>&nbsp;<a href="#" onclick="javascript: document.getElementById('symbols').selectedIndex=-1;"/>reset</a></small></small>
+        	<!--/* <input type="text"  id="symbols" name="symbols" th:value="${symbols}" />*/-->
+        	<select multiple class="form-control form-control-sm" id="symbols" name="symbols" size="15">
+        		<option th:each="currency : ${currencies}" th:value="${currency.symbol}" th:utext="${currency.symbol} + '-' + ${currency.displayName}" th:selected="${#strings.contains(symbols,currency.symbol)}"/>
+    		</select>
+        </div>
+        <div class="form-group row">
+        	<div th:with="dbgChecked=(${debugMode} ? 'checked')">
+        	<input type="checkbox" id="debugMode" name="debugMode" th:checked="${dbgChecked}" />&nbsp; 
+        	<small><label for="debugMode" class="form-check-label">Simulator Mode</label></small>
+        	</div>
+        </div>
+        <div class="form-group row">
+        	<input class="btn btn-primary btn-sm" type="submit" />
+        </div>
+	</form>
+	<!--/* Form */-->
+</div>
+
+<!--/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */-->
+<!--/* CONVERT */-->
+<!--/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */-->
+<div th:fragment="formConvert" class="container-fluid">
+	<!--/* Form */-->
+	<form method="POST" th:action="@{/jFixer/} + ${endpoint}" accept-charset="ISO-8859-1" id="fixerForm" name="fixerForm">
+		<div class="form-group row">
+			<small><label for="access_key">Access Key</label></small>
+			<input type="text" id="access_key" name="access_key" th:value="${access_key}" class="form-control form-control-sm" />
+		</div>
+		<div class="form-group row">
+			<small><label for="from">From Currency</label></small>
+			<select id="from" name="from" class="form-control form-control-sm">
+				<option value="_DEFAULT"> -- Default -- </option>
+				<option th:each="currency : ${currencies}" th:value="${currency.symbol}" th:utext="${currency.symbol} + '-' + ${currency.displayName}" th:selected="${currency.symbol eq from}"/>
+        	</select>
+        </div>
+		<div class="form-group row">
+			<small><label for="to">To Currency</label></small>
+			<select id="to" name="to" class="form-control form-control-sm">
+				<option value="_DEFAULT"> -- Default -- </option>
+				<option th:each="currency : ${currencies}" th:value="${currency.symbol}" th:utext="${currency.symbol} + '-' + ${currency.displayName}" th:selected="${currency.symbol eq to}"/>
+        	</select>
+        </div>
+        <div class="form-group row">
+			<small><label for="amount">Amount</label></small>
+			<input type="text" id="amount" name="amount" th:value="${amount}" class="form-control form-control-sm" />
+		</div>
+       	<div class="form-group row">
+			<small><label for="date">Date</label></small>
+			<input type="text" id="date" name="date" th:value="${date}" class="form-control form-control-sm" />
+       	</div>
+        <div class="form-group row">
+        	<div th:with="dbgChecked=(${debugMode} ? 'checked')">
+        	<input type="checkbox" id="debugMode" name="debugMode" th:checked="${dbgChecked}" />&nbsp; 
+        	<small><label for="debugMode" class="form-check-label">Simulator Mode</label></small>
+        	</div>
+        </div>
+        <div class="form-group row">
+        	<input class="btn btn-primary btn-sm" type="submit" />
+        </div>
+	</form>
+	<!--/* Form */-->
+</div>
+
+<!--/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */-->
+<!--/* SUPPORTED SYMBOLS */-->
+<!--/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */-->
+<div th:fragment="formSymbols" class="container-fluid">
+	<!--/* Form */-->
+	<form method="POST" action="/jFixer/symbols" accept-charset="ISO-8859-1" id="fixerForm" name="fixerForm">
+		<div class="form-group row">
+			<small><label for="access_key">Access Key</label></small>
+			<input type="text" id="access_key" name="access_key" th:value="${access_key}" class="form-control form-control-sm" />
+		</div>
+		<div class="form-group row">
+        	<small><label for="country">Display currency name in language:</label></small>
+        	<select id="country" name="country" class="form-control form-control-sm">
+				<option value=""> -- Default -- </option>
+				<option th:each="cntry : ${countries}" th:value="${cntry}" th:utext="${cntry}" th:selected="${cntry eq country}"/>
+        	</select>
+        </div>
+        <div class="form-group row">
+        	<div th:with="dbgChecked=(${debugMode} ? 'checked')">
+        		<input type="checkbox" id="debugMode" name="debugMode" th:checked="${dbgChecked}" />&nbsp; 
+        		<small><label for="debugMode" class="form-check-label">Simulator Mode</label></small>
+        	</div>
+        </div>
+        <div class="form-group row">
+        	<input class="btn btn-primary btn-sm" type="submit" />
+        </div>
+	</form>
+	<!--/* Form */-->
+</div>
+
+<!--/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */-->
+<!--/* HOME */-->
+<!--/* xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx */-->
+<div th:fragment="formHome" class="container-fluid">
+<!--/* Form */-->
+	<form method="POST" action="/jFixer/home" accept-charset="ISO-8859-1" id="fixerForm" name="fixerForm">
+	</form>
+	<!--/* Form */-->
+</div>
