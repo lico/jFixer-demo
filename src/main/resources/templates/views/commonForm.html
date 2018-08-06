@@ -35,6 +35,12 @@
         	</div>
         </div>
         <div class="form-group row">
+        	<div th:with="httpsChecked=(${httpsMode} ? 'checked')">
+        	<input type="checkbox" id="httpsMode" name="httpsMode" th:checked="${httpsChecked}" />&nbsp; 
+        	<small><label for="httpsMode" class="form-check-label">HTTPS</label></small>
+        	</div>
+        </div>
+        <div class="form-group row">
         	<input class="btn btn-primary btn-sm" type="submit" />
         </div>
 	</form>
@@ -86,6 +92,12 @@
         	</div>
         </div>
         <div class="form-group row">
+        	<div th:with="httpsChecked=(${httpsMode} ? 'checked')">
+        	<input type="checkbox" id="httpsMode" name="httpsMode" th:checked="${httpsChecked}" />&nbsp; 
+        	<small><label for="httpsMode" class="form-check-label">HTTPS</label></small>
+        	</div>
+        </div>
+        <div class="form-group row">
         	<input class="btn btn-primary btn-sm" type="submit" />
         </div>
 	</form>
@@ -131,6 +143,12 @@
         	</div>
         </div>
         <div class="form-group row">
+        	<div th:with="httpsChecked=(${httpsMode} ? 'checked')">
+        	<input type="checkbox" id="httpsMode" name="httpsMode" th:checked="${httpsChecked}" />&nbsp; 
+        	<small><label for="httpsMode" class="form-check-label">HTTPS</label></small>
+        	</div>
+        </div>
+        <div class="form-group row">
         	<input class="btn btn-primary btn-sm" type="submit" />
         </div>
 	</form>
@@ -158,6 +176,12 @@
         	<div th:with="dbgChecked=(${debugMode} ? 'checked')">
         		<input type="checkbox" id="debugMode" name="debugMode" th:checked="${dbgChecked}" />&nbsp; 
         		<small><label for="debugMode" class="form-check-label">Simulator Mode</label></small>
+        	</div>
+        </div>
+        <div class="form-group row">
+        	<div th:with="httpsChecked=(${httpsMode} ? 'checked')">
+        	<input type="checkbox" id="httpsMode" name="httpsMode" th:checked="${httpsChecked}" />&nbsp; 
+        	<small><label for="httpsMode" class="form-check-label">HTTPS</label></small>
         	</div>
         </div>
         <div class="form-group row">

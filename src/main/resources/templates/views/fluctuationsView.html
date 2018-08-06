@@ -15,14 +15,19 @@
 		
 		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
 		
-		<div class="col-2 alert alert-secondary">
+		<div class="col-2 alert alert-secondary" style="height: 100%; background-color: rgba(0,0,255,.1)">
 			<div th:insert="views/commonForm :: formTimeSeries"></div>
 		</div>
 		
 		<th:block th:insert="views/commonColumns :: blankCol"></th:block>
 	
-		<div th:if="${#strings.equals(error,'')}" class="col-4 alert alert-info">
-			<h2>Fluctuations</h2>
+		<div th:if="${#strings.equals(error,'')}" class="col-4">
+		<div class="card">
+		<div class="card-header">
+				<h4 class="mb-0">
+			Fluctuations <th:block th:unless="${debugMode==false}" th:text="[Simulator]" /></h4>
+			</div>
+			<div class="card-body">
 			<table class="table">
 				<thead>
 					<th>Currency</th>
@@ -46,11 +51,12 @@
 						<span th:inline="text">[[${#numbers.formatDecimal(fluctuation.change, 1, 'COMMA', 6, 'POINT')}]]</span>&nbsp;<span th:text="${fluctuation.baseCurrency}"></span>
 					</td>
 					<td class="text-right">
-						<span th:inline="text">[[${#numbers.formatDecimal(fluctuation.changePct*100, 0, 'COMMA', 2, 'POINT')}]]</span>&nbsp;%
+						<span th:inline="text">[[${#numbers.formatDecimal(fluctuation.changePct, 0, 'COMMA', 2, 'POINT')}]]</span>&nbsp;%
 					</td>
 				</tr>
 				</tbody>
 			</table>
+			</div></div>
 		</div>
 		
 		<th:block th:insert="views/commonError :: error" th:unless="${#strings.isEmpty(error)}" id="toto"></th:block>
@@ -80,5 +86,5 @@ $( function() {
 } );
 /*]]>*/
 </script>
-</body>
-</html>
+
+<th:block th:include="views/commonFooter :: generalFooter">

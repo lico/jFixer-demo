@@ -12,6 +12,7 @@
 	<name>jfixer-demo</name>
 	<description>Demo project for the Java API of Fixer.io</description>
 
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>

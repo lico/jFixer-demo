@@ -1,6 +1,5 @@
 package com.upandcoding.jfixerdemo.simulator;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -21,7 +20,7 @@ import com.upandcoding.fixer.model.Currency;
 import com.upandcoding.jfixerdemo.Common;
 
 @Controller
-@RequestMapping(value = "/jFixer/api", method = RequestMethod.GET, produces = { "application/json; charset=UTF-8" })
+@RequestMapping(value={"/jFixer/api", "/jFixer/api2"}, method = RequestMethod.GET, produces = { "application/json; charset=UTF-8" })
 public class SimulatorLatest {
 
 	private static final Logger log = LoggerFactory.getLogger(SimulatorLatest.class);

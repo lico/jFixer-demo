@@ -1,7 +1,13 @@
  
-		<div class="col-5 alert alert-success" th:fragment="json">
-			<h2>JSON</h2>
-			<span th:text="${serviceUrl}" style="overflow-wrap:break-word;"></span>
-			<hr />
-			<div id="jsonRaw" style="font-family: courier"></div>
+		<div class="col-5" th:fragment="json">
+			<div class="card">
+				<div class="card-header">
+					<h4 class="mb-0">JSON <th:block th:unless="${debugMode==false}" th:text="[Simulator]" /></h4>
+				</div>
+				<div class="card-body">
+					<span th:text="${serviceUrl}" style="overflow-wrap:break-word;"></span>
+					<hr />
+					<pre class="code" id="jsonRaw"></pre>
+				</div>
+			</div>
 		</div>

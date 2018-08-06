@@ -9,7 +9,8 @@
 	$(document).ready(function() {
 	    var jsonContent = /*[[${WebResponse}]]*/ "";
 	    var disp = document.getElementById("jsonRaw");
-	    disp.innerHTML = "<pre>" + formatJson(jsonContent) + "</pre>";
+	    //disp.innerHTML = "<pre>" + formatJson(jsonContent) + "</pre>";
+	    disp.innerHTML = formatJson(jsonContent);
 	});
 	/*]]>*/
 	</script>

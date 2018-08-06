@@ -19,7 +19,7 @@ import com.upandcoding.fixer.model.Currency;
 import com.upandcoding.jfixerdemo.Common;
 
 @Controller
-@RequestMapping(value = "/jFixer/api", method = RequestMethod.GET, produces = { "application/json; charset=UTF-8" })
+@RequestMapping(value={"/jFixer/api", "/jFixer/api2"}, method = RequestMethod.GET, produces = { "application/json; charset=UTF-8" })
 public class SimulatorTimeSeries {
 
 	private static final Logger log = LoggerFactory.getLogger(SimulatorTimeSeries.class);

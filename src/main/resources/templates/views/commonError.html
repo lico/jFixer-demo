@@ -1,4 +1,10 @@
- 		<div th:unless="${#strings.equals(error,'')}" class="col-4 alert alert-info" th:fragment="error">
-			<h1>Error</h1>
-			<span th:text="${error}"></span>
+ 		<div th:unless="${#strings.equals(error,'')}" class="col-4" th:fragment="error">
+ 			<div class="card">
+				<div class="card-header">
+					<h4 class="mb-0">Error</h4>
+				</div>
+				<div class="card-body">
+					<span th:text="${error}"></span>
+				</div>
+			</div>
 		</div>

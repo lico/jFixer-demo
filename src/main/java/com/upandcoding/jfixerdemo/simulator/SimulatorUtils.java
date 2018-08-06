@@ -238,7 +238,7 @@ public class SimulatorUtils {
 				if (rateStart != null && rateEnd != null) {
 					if (isPct) {
 						if (rateStart != 0) {
-							return (rateEnd - rateStart) / rateStart;
+							return ((rateEnd - rateStart) / rateStart) * 100;
 						} else {
 							return 0;
 						}

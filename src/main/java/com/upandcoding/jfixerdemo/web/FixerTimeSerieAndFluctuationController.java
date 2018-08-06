@@ -31,6 +31,7 @@ import com.upandcoding.fixer.endpoint.field.EndpointField;
 import com.upandcoding.fixer.model.Currency;
 import com.upandcoding.fixer.model.ExchangeRate;
 import com.upandcoding.fixer.model.Fluctuation;
+import com.upandcoding.jfixerdemo.Common;
 import com.upandcoding.jfixerdemo.simulator.SimulatorUtils;
 
 @Controller
@@ -43,6 +44,9 @@ public class FixerTimeSerieAndFluctuationController {
 
 	@Value("${fixer.url}")
 	String baseUrl;
+	
+	@Value("${fixer.url.https}")
+	String baseUrlHttps;
 
 	@Value("${fixer.simulator.url}")
 	String baseSimulatorUrl;
@@ -61,10 +65,11 @@ public class FixerTimeSerieAndFluctuationController {
 			@RequestParam(value = "access_key", required = false) String accessKey,
 			@RequestParam(value = "base", required = false) String baseCurrency,
 			@RequestParam(value = "symbols", required = false) String symbols,
+			@RequestParam(value = "httpsMode", required = false) String https,
 			@RequestParam(value = "debugMode", required = false) String debug) throws Exception {
 
 		return endpointTimeSeriesOrFluctuation(request, FLUCTUATION, "views/fluctuationsView", accessKey, baseCurrency,
-				symbols, startDate, endDate, debug);
+				symbols, startDate, endDate, debug, https);
 	}
 
 	@RequestMapping(value = "/jFixer/timeSeries", method = { RequestMethod.GET, RequestMethod.POST })
@@ -75,28 +80,44 @@ public class FixerTimeSerieAndFluctuationController {
 			@RequestParam(value = "access_key", required = false) String accessKey,
 			@RequestParam(value = "base", required = false) String baseCurrency,
 			@RequestParam(value = "symbols", required = false) String symbols,
+			@RequestParam(value = "httpsMode", required = false) String https,
 			@RequestParam(value = "debugMode", required = false) String debug)
 			throws JsonParseException, FixerException, IOException {
 
 		return endpointTimeSeriesOrFluctuation(request, TIME_SERIES, "views/timeSeriesView", accessKey, baseCurrency,
-				symbols, startDate, endDate, debug);
+				symbols, startDate, endDate, debug, https);
 	}
 
 	public ModelAndView endpointTimeSeriesOrFluctuation(HttpServletRequest request, String endpointName,
 			String viewName, String accessKey, String baseCurrency, String symbols, String startDate, String endDate,
-			String debug) throws JsonParseException, FixerException, IOException {
+			String debug, String https) throws JsonParseException, FixerException, IOException {
 
-		WebUtils.displayParameters(request,endpointName);
+		WebUtils.displayParameters(request, endpointName);
 
-		String baseServiceUrl = baseUrl;
-		boolean debugMode = false;
-		if ("on".equalsIgnoreCase(debug) || SimulatorUtils.simulatorKey.equalsIgnoreCase(accessKey)) {
-			debugMode = true;
-			baseServiceUrl = baseSimulatorUrl;
-		}
+		// Check Access Key
 		if (StringUtils.isBlank(accessKey)) {
 			accessKey = defaultAccessKey;
 		}
+		if (SimulatorUtils.simulatorKey.equalsIgnoreCase(accessKey) || SimulatorUtils.invalidKey.equalsIgnoreCase(accessKey)) {
+			debug = Common.DEBUG_ON;
+		}
+
+		// Check Base URL (https)
+		String fixerUrl = baseUrl;
+		boolean httpsMode = false;
+		if (Common.DEBUG_ON.equalsIgnoreCase(https)) {
+			fixerUrl = baseUrlHttps;
+			httpsMode=true;
+		}
+		
+		// Check Debug
+		String baseServiceUrl = fixerUrl;
+		boolean debugMode = false;
+		if (Common.DEBUG_ON.equalsIgnoreCase(debug) || SimulatorUtils.simulatorKey.equalsIgnoreCase(accessKey)) {
+			debugMode = true;
+			baseServiceUrl = baseSimulatorUrl;
+		}
+
 		if (StringUtils.isBlank(baseCurrency) || "_DEFAULT".equalsIgnoreCase(baseCurrency)) {
 			baseCurrency = defaultBaseCurrency;
 		}
@@ -128,6 +149,7 @@ public class FixerTimeSerieAndFluctuationController {
 		view.addObject("start_date", startDate);
 		view.addObject("end_date", endDate);
 		view.addObject("debugMode", debugMode);
+		view.addObject("httpsMode", httpsMode);
 		view.addObject("endpoint", endpointName);
 
 		view.addObject("pageTitle", "jFixer - " + endpointName);
@@ -197,7 +219,7 @@ public class FixerTimeSerieAndFluctuationController {
 		view.addObject("currencies", currencies);
 		view.addObject("nbCurrencies", currencies.size());
 		log.debug("Found {} currencies", currencies.size());
-		
+
 		log.debug("");
 		log.debug("BaseURL: {}", baseServiceUrl);
 		log.debug("serviceUrl: {}", url);

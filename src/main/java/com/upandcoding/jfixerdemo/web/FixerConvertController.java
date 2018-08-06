@@ -40,6 +40,9 @@ public class FixerConvertController {
 
 	@Value("${fixer.url}")
 	String baseUrl;
+	
+	@Value("${fixer.url.https}")
+	String baseUrlHttps;
 
 	@Value("${fixer.simulator.url}")
 	String baseSimulatorUrl;
@@ -58,6 +61,7 @@ public class FixerConvertController {
 			@RequestParam(value = "to", required = false) String toCurrency,
 			@RequestParam(value = "amount", required = false) Double amount,
 			@RequestParam(value = "date", required = false) String date,
+			@RequestParam(value = "httpsMode", required = false) String https,
 			@RequestParam(value = "debugMode", required = false) String debug) throws Exception {
 
 		WebUtils.displayParameters(request,endpointName);
@@ -66,16 +70,30 @@ public class FixerConvertController {
 			amount = 1d;
 		}
 		
-		String baseServiceUrl = baseUrl;
+		// Check Access Key
+		if (StringUtils.isBlank(accessKey)) {
+			accessKey = defaultAccessKey;
+		}
+		if (SimulatorUtils.simulatorKey.equalsIgnoreCase(accessKey) || SimulatorUtils.invalidKey.equalsIgnoreCase(accessKey)) {
+			debug = Common.DEBUG_ON;
+		}
+		
+		// Check Base URL (https)
+		String fixerUrl = baseUrl;
+		boolean httpsMode = false;
+		if (Common.DEBUG_ON.equalsIgnoreCase(https)) {
+			fixerUrl = baseUrlHttps;
+			httpsMode=true;
+		}
+		
+		// Check Debug
+		String baseServiceUrl = fixerUrl;
 		boolean debugMode = false;
-		if ("on".equalsIgnoreCase(debug) || SimulatorUtils.simulatorKey.equalsIgnoreCase(accessKey)) {
+		if (Common.DEBUG_ON.equalsIgnoreCase(debug) || SimulatorUtils.simulatorKey.equalsIgnoreCase(accessKey)) {
 			debugMode = true;
 			baseServiceUrl = baseSimulatorUrl;
 		}
 
-		if (StringUtils.isBlank(accessKey)) {
-			accessKey = defaultAccessKey;
-		}
 		if (StringUtils.isBlank(fromCurrency)) {
 			fromCurrency = defaultBaseCurrency;
 		}
@@ -94,6 +112,7 @@ public class FixerConvertController {
 		view.addObject("amount", amount);
 		view.addObject("date", date);
 		view.addObject("debugMode", debugMode);
+		view.addObject("httpsMode", httpsMode);
 		view.addObject("endpoint", endpointName);
 
 		view.addObject("pageTitle", "jFixer - " + endpointName);

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.upandcoding.fixer.model.Currency;
 
 @Controller
-@RequestMapping(value = "/jFixer/api", method = RequestMethod.GET, produces = { "application/json; charset=UTF-8" })
+@RequestMapping(value={"/jFixer/api", "/jFixer/api2"}, method = RequestMethod.GET, produces = { "application/json; charset=UTF-8" })
 public class SimulatorFluctuations {
 
 	private static final Logger log = LoggerFactory.getLogger(SimulatorFluctuations.class);

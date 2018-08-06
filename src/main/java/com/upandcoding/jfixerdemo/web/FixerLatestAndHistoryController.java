@@ -40,6 +40,9 @@ public class FixerLatestAndHistoryController {
 
 	@Value("${fixer.url}")
 	String baseUrl;
+	
+	@Value("${fixer.url.https}")
+	String baseUrlHttps;
 
 	@Value("${fixer.simulator.url}")
 	String baseSimulatorUrl;
@@ -62,10 +65,11 @@ public class FixerLatestAndHistoryController {
 			@RequestParam(value = "date", required = false) String date,
 			@RequestParam(value = "base", required = false) String baseCurrency,
 			@RequestParam(value = "symbols", required = false) String symbols,
+			@RequestParam(value = "httpsMode", required = false) String https,
 			@RequestParam(value = "debugMode", required = false) String debug) throws Exception {
 
 		return endpointLatestOrHistory(request, Common.HISTORY, "views/historyView", accessKey, baseCurrency, symbols, date,
-				debug);
+				debug, https);
 	}
 
 	@RequestMapping(value = "/jFixer/latest", method = { RequestMethod.GET, RequestMethod.POST })
@@ -74,28 +78,44 @@ public class FixerLatestAndHistoryController {
 			@RequestParam(value = "access_key", required = false) String accessKey,
 			@RequestParam(value = "base", required = false) String baseCurrency,
 			@RequestParam(value = "symbols", required = false) String symbols,
+			@RequestParam(value = "httpsMode", required = false) String https,
 			@RequestParam(value = "debugMode", required = false) String debug)
 			throws JsonParseException, FixerException, IOException {
 
 		return endpointLatestOrHistory(request, Common.LATEST, "views/latestView", accessKey, baseCurrency, symbols, null,
-				debug);
+				debug, https);
 	}
 
 	public ModelAndView endpointLatestOrHistory(HttpServletRequest request, String endpointName, String viewName,
-			String accessKey, String baseCurrency, String symbols, String date, String debug)
+			String accessKey, String baseCurrency, String symbols, String date, String debug, String https)
 			throws JsonParseException, FixerException, IOException {
 
-		WebUtils.displayParameters(request,endpointName);
+		WebUtils.displayParameters(request, endpointName);
 
-		String baseServiceUrl = baseUrl;
-		boolean debugMode = false;
-		if ("on".equalsIgnoreCase(debug) || SimulatorUtils.simulatorKey.equalsIgnoreCase(accessKey)) {
-			debugMode = true;
-			baseServiceUrl = baseSimulatorUrl;
-		}
+		// Check Access Key
 		if (StringUtils.isBlank(accessKey)) {
 			accessKey = defaultAccessKey;
 		}
+		if (SimulatorUtils.simulatorKey.equalsIgnoreCase(accessKey) || SimulatorUtils.invalidKey.equalsIgnoreCase(accessKey)) {
+			debug = Common.DEBUG_ON;
+		}
+
+		// Check Base URL (https)
+		String fixerUrl = baseUrl;
+		boolean httpsMode = false;
+		if (Common.HTTPS_ON.equalsIgnoreCase(https)) {
+			fixerUrl = baseUrlHttps;
+			httpsMode=true;
+		}
+		
+		// Check Debug
+		String baseServiceUrl = fixerUrl;
+		boolean debugMode = false;
+		if (Common.DEBUG_ON.equalsIgnoreCase(debug) || SimulatorUtils.simulatorKey.equalsIgnoreCase(accessKey)) {
+			debugMode = true;
+			baseServiceUrl = baseSimulatorUrl;
+		}
+
 		if (StringUtils.isBlank(baseCurrency) || "_DEFAULT".equalsIgnoreCase(baseCurrency)) {
 			baseCurrency = defaultBaseCurrency;
 		}
@@ -113,6 +133,7 @@ public class FixerLatestAndHistoryController {
 		view.addObject("symbols", symbols);
 		view.addObject("date", date);
 		view.addObject("debugMode", debugMode);
+		view.addObject("httpsMode", httpsMode);
 		view.addObject("endpoint", endpointName);
 
 		view.addObject("pageTitle", "jFixer - " + endpointName);
@@ -165,7 +186,7 @@ public class FixerLatestAndHistoryController {
 			endpoint = new HistoricalEndpoint();
 			if (StringUtils.isNotBlank(date)) {
 				EndpointField param4 = new EndpointField("date", date);
-				param4.setInUrlParameter(false); 
+				param4.setInUrlParameter(false);
 				params.add(param4);
 			}
 
